@@ -1,5 +1,7 @@
 <a href="https://pub.dartlang.org/packages/bitcoin_flutter"><img alt="pub version" src="https://img.shields.io/pub/v/bitcoin_flutter.svg?style=flat-square"></a>
 
+This is clone of the original repository: [bitcoin_flutter](https://github.com/dart-bitcoin/bitcoin_flutter)
+
 # bitcoin_flutter
 
 A dart Bitcoin library for Flutter.
@@ -31,7 +33,7 @@ main() {
   // => 01304181d699cd89db7de6337d597adf5f78dc1f0784c400e41a3bd829a5a226
   print(hdWallet.wif);
   // => KwG2BU1ERd3ndbFUrdpR7ymLZbsd7xZpPKxsgJzUf76A4q9CkBpY
-  
+
   var wallet = Wallet.fromWIF("Kxr9tQED9H44gCmp6HAdmemAzU3n84H3dGkuWTKvE23JgHMW8gct");
   print(wallet.address);
   // => 19AAjaTUbRjQCMuVczepkoPswiZRhjtg31
