@@ -1,6 +1,6 @@
 <a href="https://pub.dartlang.org/packages/bitcoin_flutter"><img alt="pub version" src="https://img.shields.io/pub/v/bitcoin_flutter.svg?style=flat-square"></a>
 
-This is clone of the original repository: [bitcoin_flutter](https://github.com/dart-bitcoin/bitcoin_flutter)
+This is a clone of the original repository: [bitcoin_flutter](https://github.com/dart-bitcoin/bitcoin_flutter)
 
 # bitcoin_flutter
 
