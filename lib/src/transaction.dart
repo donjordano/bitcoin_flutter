@@ -661,6 +661,7 @@ class Output {
       if (pkh1 != pkh2) throw ArgumentError('Hash mismatch!');
       return new Output(pubkeys: [ourPubKey], signatures: [null]);
     }
+    return new Output();
   }
 
   factory Output.clone(Output output) {
