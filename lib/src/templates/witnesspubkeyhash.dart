@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'dart:typed_data';
 import '../utils/script.dart' as bscript;
 import '../utils/constants/op.dart';
@@ -10,6 +12,6 @@ bool inputCheck(List<dynamic> chunks) {
 }
 
 bool outputCheck(Uint8List script) {
-  final buffer = bscript.compile(script);
+  final buffer = bscript.compile(script)!;
   return buffer.length == 22 && buffer[0] == OPS['OP_0'] && buffer[1] == 0x14;
 }

@@ -7,13 +7,13 @@ import '../lib/src/utils/script.dart' as bscript;
 import '../lib/src/transaction.dart';
 
 main() {
-  final fixtures = json.decode(new File('test/fixtures/transaction.json')
-      .readAsStringSync(encoding: utf8));
-  final valids = (fixtures['valid'] as List<dynamic>);
+  final fixtures = json.decode(
+      File('test/fixtures/transaction.json').readAsStringSync(encoding: utf8));
+  final valids = (fixtures['valid'] as List<dynamic>?);
 
   group('Transaction', () {
     group('fromBuffer/fromHex', () {
-      valids.forEach(importExport);
+      valids!.forEach(importExport);
       (fixtures['hashForSignature'] as List<dynamic>).forEach(importExport);
       (fixtures['invalid']['fromBuffer'] as List<dynamic>).forEach((f) {
         test('throws on ${f['exception']}', () {
@@ -33,7 +33,7 @@ main() {
     });
 
     group('toBuffer/toHex', () {
-      valids.forEach((f) {
+      valids!.forEach((f) {
         test('exports ${f['description']} (${f['id']})', () {
           Transaction actual = fromRaw(f['raw'], false);
           expect(actual.toHex(), f['hex']);
@@ -49,7 +49,7 @@ main() {
 
     group('weight/virtualSize', () {
       test('computes virtual size', () {
-        valids.forEach((f) {
+        valids!.forEach((f) {
           final txHex =
               (f['whex'] != null && f['whex'] != '') ? f['whex'] : f['hex'];
           final transaction = Transaction.fromHex(txHex);
@@ -59,28 +59,28 @@ main() {
     });
 
     group('addInput', () {
-      var prevTxHash;
+      late var prevTxHash;
       setUp(() {
         prevTxHash = HEX.decode(
             'ffffffff00ffff000000000000000000000000000000000000000000101010ff');
       });
       test('returns an index', () {
-        final tx = new Transaction();
+        final tx = Transaction();
         expect(tx.addInput(prevTxHash, 0), 0);
         expect(tx.addInput(prevTxHash, 0), 1);
       });
       test('defaults to empty script, and 0xffffffff SEQUENCE number', () {
-        final tx = new Transaction();
+        final tx = Transaction();
         tx.addInput(prevTxHash, 0);
-        expect(tx.ins[0].script.length, 0);
+        expect(tx.ins[0].script!.length, 0);
         expect(tx.ins[0].sequence, 0xffffffff);
       });
       (fixtures['invalid']['addInput'] as List<dynamic>).forEach((f) {
         test('throws on ' + f['exception'], () {
-          final tx = new Transaction();
+          final tx = Transaction();
           final hash = HEX.decode(f['hash']);
           try {
-            expect(tx.addInput(hash, f['index']), isArgumentError);
+            expect(tx.addInput(hash as Uint8List, f['index']), isArgumentError);
           } catch (err) {
             expect((err as ArgumentError).message, f['exception']);
           }
@@ -89,9 +89,9 @@ main() {
     });
 
     test('addOutput returns an index', () {
-      final tx = new Transaction();
-      expect(tx.addOutput(new Uint8List(0), 0), 0);
-      expect(tx.addOutput(new Uint8List(0), 0), 1);
+      final tx = Transaction();
+      expect(tx.addOutput(Uint8List(0), 0), 0);
+      expect(tx.addOutput(Uint8List(0), 0), 1);
     });
 
     group('getHash/getId', () {
@@ -105,7 +105,7 @@ main() {
         });
       }
 
-      valids.forEach(verify);
+      valids!.forEach(verify);
     });
 
     group('isCoinbase', () {
@@ -118,7 +118,7 @@ main() {
         });
       }
 
-      valids.forEach(verify);
+      valids!.forEach(verify);
     });
 
     group('hashForSignature', () {
@@ -147,7 +147,7 @@ importExport(dynamic f) {
 }
 
 Transaction fromRaw(raw, [isWitness]) {
-  final tx = new Transaction();
+  final tx = Transaction();
   tx.version = raw['version'];
   tx.locktime = raw['locktime'];
 
@@ -160,7 +160,8 @@ Transaction fromRaw(raw, [isWitness]) {
     } else if (txIn['script'] != null && txIn['script'] != '') {
       scriptSig = bscript.fromASM(txIn['script']);
     }
-    tx.addInput(txHash, txIn['index'], txIn['sequence'], scriptSig);
+    tx.addInput(
+        txHash as Uint8List, txIn['index'], txIn['sequence'], scriptSig);
 
     if (isWitness) {
       var witness = (txIn['witness'] as List<dynamic>)
