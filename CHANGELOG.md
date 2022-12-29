@@ -1,3 +1,5 @@
+## 2.1.1
+- Update dependecies versions
 ## 2.0.2
 - Add support for optional 'noStrict' parameter in Transaction.fromBuffer
 
